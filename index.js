@@ -3,9 +3,11 @@ const qrcode = require('qrcode-terminal');
 const { handleMessage } = require('./src/bot');
 
 const client = new Client({
-    authStrategy: new LocalAuth(),
-    puppeteer: { headless: true }
-});
+    pauthStrategy: new LocalAuth(),
+    puppeteer: {
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+}});
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });

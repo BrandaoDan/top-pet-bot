@@ -43,4 +43,6 @@ async function enviarRelatorioPorEmail(caminhoRelatorio = gerarCaminhoRelatorioH
   }
 }
 
-module.exports = { enviarRelatorioPorEmail };
+module.exports = {
+  gerarCaminhoRelatorioHoje,
+  enviarRelatorioPorEmail };

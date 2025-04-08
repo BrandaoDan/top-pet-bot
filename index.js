@@ -35,7 +35,7 @@ const { gerarRelatorioDoDia, enviarRelatorioPorEmail } = require('./relatorio');
 cron.schedule('59 23 * * *', async () => {
     console.log('⏰ Gerando e enviando relatório automático...');
     try {
-        const path = await gerarRelatorioDoDia();
+        const path = await gerarCaminhoRelatorioHoje();
         await enviarRelatorioPorEmail(path);
         console.log('✅ Relatório enviado automaticamente!');
     } catch (error) {

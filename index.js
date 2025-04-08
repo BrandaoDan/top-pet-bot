@@ -28,3 +28,17 @@ client.on('message', async (message) => {
 });
 
 client.initialize();
+const cron = require('node-cron');
+const { gerarRelatorioDoDia, enviarRelatorioPorEmail } = require('./relatorio');
+
+// Agendar envio automático todos os dias às 23h59
+cron.schedule('59 23 * * *', async () => {
+    console.log('⏰ Gerando e enviando relatório automático...');
+    try {
+        const path = await gerarRelatorioDoDia();
+        await enviarRelatorioPorEmail(path);
+        console.log('✅ Relatório enviado automaticamente!');
+    } catch (error) {
+        console.error('❌ Erro no envio automático:', error);
+    }
+});

@@ -2,6 +2,9 @@
 # Ignorar dependências
 # ==========================
 node_modules/
+.wwebjs_auth/
+
+
 
 # ==========================
 # Logs e arquivos temporários

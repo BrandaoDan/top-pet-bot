@@ -23,6 +23,7 @@ Este é um bot automatizado para WhatsApp, desenvolvido com `whatsapp-web.js`, q
 - Nodemailer
 - Dotenv
 - File System (fs)
+- PM2 (gerenciador de processos)
 
 ---
 
@@ -63,6 +64,11 @@ EMAIL_PASS=sua_senha
 EMAIL_DESTINO=email@destino.com
 ```
 
+### Recomendado:
+- Se estiver usando Gmail, ative a verificação em duas etapas e gere uma **senha de aplicativo**:  
+  https://myaccount.google.com/apppasswords
+- O campo `EMAIL_DESTINO` pode conter múltiplos e-mails separados por vírgula.
+
 ---
 
 ## 🚀 Como iniciar o bot
@@ -74,6 +80,30 @@ npm start
 ```
 
 Será aberta uma aba no navegador para escanear o QR Code com o WhatsApp.
+
+---
+
+## ▶️ Rodando automaticamente com PM2
+
+Para manter o bot rodando mesmo após reiniciar o servidor:
+
+```bash
+sudo npm install -g pm2
+pm2 start src/index.js --name top-pet-bot
+pm2 startup
+```
+
+Copie o comando que o `pm2 startup` gerar e cole no terminal. Depois salve o estado:
+
+```bash
+pm2 save
+```
+
+Para verificar se está rodando:
+
+```bash
+pm2 status
+```
 
 ---
 
@@ -90,6 +120,16 @@ Fora desses horários, o bot envia uma resposta automática.
 
 - Os atendimentos são salvos em `.csv` na pasta `relatorios/`
 - Diariamente, um e-mail com o relatório do dia é enviado automaticamente
+
+**Exemplo de envio manual (para testes):**
+
+Dentro do código, existe uma função chamada `enviarRelatorioPorEmail(pathArquivo)`.
+Você pode chamá-la manualmente no `index.js` para testar:
+
+```js
+const { enviarRelatorioPorEmail } = require('./relatorio');
+enviarRelatorioPorEmail('./relatorios/relatorio_hoje.csv');
+```
 
 ---
 

@@ -2,10 +2,12 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
+const { DateTime } = require("luxon");
+
 
 // Função para montar o caminho do relatório com a data de hoje
 function gerarCaminhoRelatorioHoje() {
-  const hoje = new Date();
+  const hoje = DateTime.now().setZone("America/Bahia");
   const yyyy = hoje.getFullYear();
   const mm = String(hoje.getMonth() + 1).padStart(2, '0');
   const dd = String(hoje.getDate()).padStart(2, '0');

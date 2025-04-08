@@ -1,4 +1,6 @@
 // src/bot.js
+const { DateTime } = require("luxon");
+
 
 require('dotenv').config();
 const { atualizarDados, dadosClientes } = require('./clientes');
@@ -7,7 +9,8 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 
 function foraDoHorario() {
-    const agora = new Date();
+    const agora = DateTime.now().setZone("America/Bahia");
+
     const dia = agora.getDay(); // 0 = domingo, 6 = sábado
     const hora = agora.getHours();
     const minutos = agora.getMinutes();
@@ -67,7 +70,8 @@ async function handleMessage(message, client) {
 
 function salvarAtendimento(numero) {
     const cliente = dadosClientes[numero];
-    const hoje = new Date();
+    const hoje = DateTime.now().setZone("America/Bahia");
+;
     const nomeArquivo = path.join(__dirname, `../relatorios/${hoje.toISOString().slice(0, 10)}.csv`);
     const cabecalho = 'Número,Pet,Serviço,Data\n';
     const linha = `${numero},${cliente.nomePet},${cliente.produtoDesejado},${cliente.dataAgendada}\n`;
@@ -84,7 +88,7 @@ function salvarAtendimento(numero) {
 
 // Enviar e-mail diariamente com os relatórios
 async function enviarRelatorioPorEmail() {
-    const hoje = new Date().toISOString().slice(0, 10);
+    const hoje = DateTime.now().setZone("America/Bahia").toISOString().slice(0, 10);
     const caminho = path.join(__dirname, `../relatorios/${hoje}.csv`);
     if (!fs.existsSync(caminho)) return;
 

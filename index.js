@@ -29,7 +29,7 @@ client.on('message', async (message) => {
 
 client.initialize();
 const cron = require('node-cron');
-const { gerarRelatorioDoDia, enviarRelatorioPorEmail } = require('.src/relatorio');
+const { gerarRelatorioDoDia, enviarRelatorioPorEmail } = require('./relatorio');
 
 // Agendar envio automático todos os dias às 23h59
 cron.schedule('59 23 * * *', async () => {

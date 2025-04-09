@@ -35,7 +35,8 @@ const { gerarRelatorioDoDia, enviarRelatorioPorEmail } = require('./src/relatori
 
 // Agendar envio automático todos os dias às 23h59
 cron.schedule('59 23 * * *', async () => {
-    console.log('⏰ Gerando e enviando relatório automático...');
+    const hora = DateTime.now().setZone('America/Bahia').toFormat('HH:mm:ss');
+    console.log(`⏰ [${hora}] Gerando e enviando relatório automático...`);
     try {
         const path = await gerarCaminhoRelatorioHoje();
         await enviarRelatorioPorEmail(path);
@@ -43,4 +44,6 @@ cron.schedule('59 23 * * *', async () => {
     } catch (error) {
         console.error('❌ Erro no envio automático:', error);
     }
+}, {
+    timezone: 'America/Bahia'
 });

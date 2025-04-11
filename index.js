@@ -4,13 +4,20 @@ const { handleMessage } = require('./src/bot');
 const { DateTime } = require("luxon");
 
 
+//const { Client, LocalAuth } = require('whatsapp-web.js');
+
 const client = new Client({
     authStrategy: new LocalAuth(),
+    webVersionCache: {
+        type: 'remote',
+        remotePath: 'https://raw.githubusercontent.com/wwebjs/wa-version/main/html/2.2407.3.html'
+    },
     puppeteer: {
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox']
     }
 });
+
 
 
 

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  top-pet-bot:
+    build: .
+    container_name: top-pet-bot
+    ports:
+      - "3000:3000" # só se você tiver um servidor rodando na porta 3000
+    volumes:
+      - ./auth:/usr/src/app/.wwebjs_auth
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped

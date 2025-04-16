@@ -1,3 +1,5 @@
+o fluxo 2 tem uma sintaxe diferente dos demais, deixe a sintaxe do fluxo 2 parecido com o 1.
+
 const { DateTime } = require("luxon");
 require('dotenv').config();
 const { atualizarDados, dadosClientes } = require('./clientes');
@@ -57,19 +59,12 @@ function capitalizarNome(nome) {
         .map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
         .join(' ');
 }
-async function atualizarEDefinir(numero, novosDados) {
-    atualizarDados(numero, novosDados);
-    return dadosClientes[numero];
-}
 
 async function handleMessage(message, client) {
     const texto = message.body.toLowerCase();
     const numero = message.from;
     const agora = DateTime.now().setZone("America/Bahia");
     let cliente = dadosClientes[numero] || {};
-    // Comando oculto: Reinicia atendimento ao digitar "menu"
-    
-
 
     if (cliente.etapa === 'pausado') {
         const inicioPausa = cliente.inicioPausa ? DateTime.fromISO(cliente.inicioPausa) : null;
@@ -119,7 +114,6 @@ async function handleMessage(message, client) {
         cliente.estado = 'aguardando_nome';
         return;
     }
-    
 
     if (!cliente.etapa && !['1', '2', '3', '4'].includes(texto)) {
         await delayAleatorio();
@@ -130,110 +124,28 @@ async function handleMessage(message, client) {
     }
     if ((texto === '1' || texto.includes('banho') || texto.includes('tosa')) && !cliente.produtoDesejado) {
         atualizarDados(numero, { produtoDesejado: 'Banho/Tosa' });
-       // cliente = await atualizarEDefinir(numero, { nomePet: message.body });
-        await delayAleatorio();
         await client.sendMessage(numero, respostas.askNamePet);
-        atualizarDados(numero, { etapa: 'aguardando_nome_pet_tosa' });
-        return;
-    }
-    if (cliente.produtoDesejado && !cliente.nomePet && cliente.etapa === 'aguardando_nome_pet_tosa') {
-        atualizarDados(numero, { nomePet: message.body });
-       // cliente = await atualizarEDefinir(numero, { nomePet: message.body });
-        await delayAleatorio();
-        await client.sendMessage(numero, respostas.askTipePet);
-        atualizarDados(numero, { etapa: 'aguardando_tipo_pet_tosa' });
         return;
     }
 
-    if (cliente.etapa === 'aguardando_tipo_pet_tosa' &&cliente.nomePet && !cliente.tipoPet) {
-        atualizarDados(numero, { tipoPet: message.body });
-        cliente = await atualizarEDefinir(numero, { tipoPet: message.body });
-        await delayAleatorio();
-        await client.sendMessage(numero, respostas.askRacePet);
-        atualizarDados(numero, { etapa: 'aguardando_raca_pet_tosa' });
-        return;
-    }
-
-    if (cliente.etapa === 'aguardando_raca_pet_tosa' &&cliente.tipoPet && !cliente.racaPet) {
-        atualizarDados(numero, { racaPet: message.body });
-
-        const datasValidas = getDatasValidas();
-        const opcoes = datasValidas.map((d, i) => `${i + 1}. 📅 ${d}`).join('\n') + `\n6. 🗓️ Outra data`;
-        await delayAleatorio();
-
-        await client.sendMessage(numero, `Agora me diga a data do agendamento.\n\nEscolha uma das opções abaixo:\n\n${opcoes}\n\nDigite o número da opção desejada.`);
-        atualizarDados(numero, { etapa: 'aguardando_data' });
-        return;
-    }
-
-    if (cliente.etapa === 'aguardando_data' && !cliente.dataAgendada) {
-        const datasValidas = getDatasValidas();
-        const opcao = message.body.trim();
-
-        if (['1', '2', '3', '4', '5'].includes(opcao)) {
-            const index = parseInt(opcao) - 1;
-            const dataEscolhida = datasValidas[index];
-            atualizarDados(numero, { dataAgendada: dataEscolhida, etapa: 'concluido' });
-        } else if (opcao === '6') {
-            await client.sendMessage(numero, 'Por favor, digite a data desejada no formato *dd/mm/aaaa*.');
-            atualizarDados(numero, { etapa: 'digitando_data_manual' });
-            return;
-        } else {
-            await client.sendMessage(numero, '⚠️ Opção inválida. Por favor, digite um número de 1 a 6.');
-            return;
-        }
-        cliente = dadosClientes[numero];
-    }
-
-    if (cliente.etapa === 'digitando_data_manual' && !cliente.dataAgendada) {
-        const dataManual = message.body.trim();
-        if (!validarDataManual(dataManual)) {
-            await client.sendMessage(numero, '⚠️ Data inválida. Certifique-se de usar o formato *dd/mm/aaaa*, e que a data não seja no passado ou domingo.');
-            return;
-        }
-
-        atualizarDados(numero, { dataAgendada: dataManual, etapa: 'concluido' });
-        cliente = dadosClientes[numero];
-    }
-
-    if (cliente.racaPet && cliente.dataAgendada && cliente.etapa === 'concluido') {
-        await client.sendMessage(numero,
-            `✅ Agendamento solicitado com sucesso!\n` +
-            `😊 Cliente: ${cliente.nome}\n` +
-            `🐶 Nome: ${cliente.nomePet}\n` +
-            `📦 Serviço: ${cliente.produtoDesejado}\n` +
-            `📋 Tipo: ${cliente.tipoPet}\n` +
-            `📍 Raça: ${cliente.racaPet}\n` +
-            `📅 Data: ${cliente.dataAgendada}\n` +
-            `🧑‍💼 Um atendente entrará em contato para confirmar.`
-        );
-        await client.sendMessage(numero, respostas.instagram);
-
-        salvarAtendimento(numero);
-        cliente.aguardandoAtendente = true;
-        atualizarDados(numero, { etapa: 'pausado', inicioPausa: agora.toISO() }); // encaminha para atendente
-        return;
-    }
-
-    ////////////////////////////////////////// FIM OPÇÃO 1 /////////////////////////////////////////
-
-    if (texto === '2' && !cliente.produtoDesejado) {
-        atualizarDados(numero, { produtoDesejado: 'Produtos' });
+    // Opção 2 - Produtos
+    if (texto === '2') {
+        atualizarDados(numero, { etapa: 'aguardando_tipo_produto', produtoDesejado: 'Produtos' });
         await delayAleatorio();
         await client.sendMessage(numero, '📦 Qual tipo de produto você está procurando? Ex: Ração, Petiscos, Brinquedos');
-        atualizarDados(numero, { etapa: 'aguardando_tipo_produto' });
         return;
     }
 
-    if (!cliente.tipoProduto && cliente.etapa === 'aguardando_tipo_produto') {
-        atualizarDados(numero, { tipoProduto: texto });
+    // Recebe o tipo de produto digitado livremente
+    if (cliente.etapa === 'aguardando_tipo_produto') {
+        atualizarDados(numero, { tipoProduto: texto, etapa: 'aguardando_tipo_pet' });
         await delayAleatorio();
-        await client.sendMessage(numero, 'O produto selecionado é para cachorro, gato ou outro ?');
-        atualizarDados(numero, { etapa: 'aguardando_tipo_pet' });
+        await client.sendMessage(numero, respostas.askTipePet); // Ex: "Esse produto é para cachorro ou gato?"
         return;
     }
 
-    if (cliente.tipoProduto && !cliente.tipoPet && cliente.etapa === 'aguardando_tipo_pet') {
+    // Recebe o tipo de pet digitado livremente e finaliza
+    if (cliente.etapa === 'aguardando_tipo_pet') {
         atualizarDados(numero, {
             tipoPet: texto,
             etapa: 'pausado',
@@ -242,47 +154,38 @@ async function handleMessage(message, client) {
         await delayAleatorio();
         await client.sendMessage(numero,
             `✅ Completamos o seu pedido!\n` +
-            `😊 Cliente: ${cliente.nome}\n` +
             `🛍️ Serviço: ${cliente.produtoDesejado}\n` +
             `📦 Produto: ${cliente.tipoProduto}\n` +
             `🐾 Tipo de pet: ${texto}\n\n` +
             `🧑‍💼 Um atendente entrará em contato para confirmar seu pedido.`
         );
-        await client.sendMessage(numero, respostas.instagram);
-        salvarAtendimento(numero);
-        cliente.aguardandoAtendente = true;
-        atualizarDados(numero, { etapa: 'pausado', inicioPausa: agora.toISO() });
         return;
     }
 
-////////////////////////////////////////// FIM OPÇÃO 2 /////////////////////////////////////////
 
 
     if ((texto === '3' || texto.includes('consulta')) && !cliente.produtoDesejado) {
         atualizarDados(numero, { produtoDesejado: 'Consulta Veterinária' });
         await delayAleatorio();
         await client.sendMessage(numero, respostas.askNamePet);
-        atualizarDados(numero, { etapa: 'aguardando_nome_pet_consulta' });
         return;
     }
 
-    if (cliente.produtoDesejado && !cliente.nomePet && cliente.etapa === 'aguardando_nome_pet_consulta') {
+    if (cliente.produtoDesejado && !cliente.nomePet) {
         atualizarDados(numero, { nomePet: message.body });
         await delayAleatorio();
         await client.sendMessage(numero, respostas.askTipePet);
-        atualizarDados(numero, {etapa: 'aguardando_tipo_pet_consulta'});
         return;
     }
 
-    if (cliente.nomePet && !cliente.tipoPet && cliente.etapa === 'aguardando_tipo_pet_consulta') {
+    if (cliente.nomePet && !cliente.tipoPet) {
         atualizarDados(numero, { tipoPet: message.body });
         await delayAleatorio();
         await client.sendMessage(numero, respostas.askRacePet);
-        atualizarDados(numero, { etapa: 'aguardando_raca_pet_consulta' });
         return;
     }
 
-    if (cliente.tipoPet && !cliente.racaPet && cliente.etapa === 'aguardando_raca_pet_consulta' ) {
+    if (cliente.tipoPet && !cliente.racaPet) {
         atualizarDados(numero, { racaPet: message.body });
 
         const datasValidas = getDatasValidas();
@@ -328,42 +231,19 @@ async function handleMessage(message, client) {
         await delayAleatorio();
         await client.sendMessage(numero,
             `✅ Agendamento solicitado com sucesso!\n` +
-            `😊 Cliente: ${cliente.nome}\n` +
-            `🐶 Nome do Pet: ${cliente.nomePet}\n` +
+            `🐶 Nome: ${cliente.nomePet}\n` +
             `📦 Serviço: ${cliente.produtoDesejado}\n` +
             `📋 Tipo: ${cliente.tipoPet}\n` +
             `📍 Raça: ${cliente.racaPet}\n` +
             `📅 Data: ${cliente.dataAgendada}\n` +
             `🧑‍💼 Um atendente entrará em contato para confirmar.`
         );
-        await client.sendMessage(numero, respostas.instagram);
 
         salvarAtendimento(numero);
         cliente.aguardandoAtendente = true;
         atualizarDados(numero, { etapa: 'pausado', inicioPausa: agora.toISO() });
         return;
     }
-
-    ////////////////////////////////////////// FIM OPÇÃO 3 /////////////////////////////////////////
-
-    if ((texto === '4' || texto.includes('atendente')) && !cliente.produtoDesejado) {
-        atualizarDados(numero, { produtoDesejado: 'Falar com atendente' });
-        await delayAleatorio();
-        await client.sendMessage(numero, respostas.rtWaitAttendant);
-        await client.sendMessage(numero, respostas.instagram);
-
-        salvarAtendimento(numero);
-        atualizarDados(numero, {
-            etapa: 'pausado',
-            inicioPausa: agora.toISO()
-        });
-        return;
-    }
-
-        
-       
-    
-
 
     if (texto && texto.trim() !== '') {
         await delayAleatorio();

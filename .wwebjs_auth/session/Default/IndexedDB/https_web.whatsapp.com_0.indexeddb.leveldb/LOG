@@ -1,15 +1,17 @@
-2025/04/11-18:21:27.319 31cc Reusing MANIFEST C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/04/11-18:21:27.320 31cc Recovering log #412
-2025/04/11-18:21:27.459 31cc Reusing old log C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000412.log 
-2025/04/11-18:21:29.679 31cc Level-0 table #418: started
-2025/04/11-18:21:29.709 31cc Level-0 table #418: 570940 bytes OK
-2025/04/11-18:21:29.712 31cc Delete type=0 #412
-2025/04/11-18:21:29.712 31cc Manual compaction at level-0 from '\x00\x91\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x92\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/04/11-18:21:33.905 31cc Compacting 1@1 + 2@2 files
-2025/04/11-18:21:34.115 31cc Generated table #419@1: 51771 keys, 2220784 bytes
-2025/04/11-18:21:34.199 31cc Generated table #420@1: 21695 keys, 618549 bytes
-2025/04/11-18:21:34.199 31cc Compacted 1@1 + 2@2 files => 2839333 bytes
-2025/04/11-18:21:34.200 31cc compacted to: files[ 0 0 2 0 0 0 0 ]
-2025/04/11-18:21:34.201 31cc Delete type=2 #414
-2025/04/11-18:21:34.201 31cc Delete type=2 #415
-2025/04/11-18:21:34.201 31cc Delete type=2 #418
+2025/04/15-18:04:38.898 338 Reusing MANIFEST C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/04/15-18:04:38.899 338 Recovering log #619
+2025/04/15-18:04:38.982 338 Reusing old log C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000619.log 
+2025/04/15-18:04:43.844 5c0c Level-0 table #626: started
+2025/04/15-18:04:43.873 5c0c Level-0 table #626: 392963 bytes OK
+2025/04/15-18:04:43.875 5c0c Delete type=0 #619
+2025/04/15-18:04:43.876 5c0c Manual compaction at level-0 from '\x00\xbb\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\xbc\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/04/15-18:04:47.281 5c0c Compacting 1@1 + 3@2 files
+2025/04/15-18:04:47.512 5c0c Generated table #627@1: 86535 keys, 2235359 bytes
+2025/04/15-18:04:47.653 5c0c Generated table #628@1: 39170 keys, 2242561 bytes
+2025/04/15-18:04:47.744 5c0c Generated table #629@1: 35024 keys, 1009170 bytes
+2025/04/15-18:04:47.744 5c0c Compacted 1@1 + 3@2 files => 5487090 bytes
+2025/04/15-18:04:47.745 5c0c compacted to: files[ 0 0 3 0 0 0 0 ]
+2025/04/15-18:04:47.746 5c0c Delete type=2 #621
+2025/04/15-18:04:47.746 5c0c Delete type=2 #622
+2025/04/15-18:04:47.746 5c0c Delete type=2 #623
+2025/04/15-18:04:47.746 5c0c Delete type=2 #626

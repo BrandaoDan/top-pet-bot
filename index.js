@@ -30,8 +30,11 @@ client.on('qr', (qr) => {
 
     ultimaGeracaoQR = agora;
     console.log('📱 Novo QR gerado. Escaneie com o WhatsApp:');
+    console.log('```');       
     qrcode.generate(qr, { small: true });
+    console.log('```');       
 });
+
 
 client.on('ready', () => {
     console.log('✅ Cliente está pronto!');

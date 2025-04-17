@@ -2,9 +2,11 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const { handleMessage } = require('./src/bot');
 const { DateTime } = require("luxon");
+const cron = require('node-cron');
+const { gerarCaminhoRelatorioHoje,enviarRelatorioPorEmail } = require('./src/relatorio');
 
 
-//const { Client, LocalAuth } = require('whatsapp-web.js');
+let ultimaGeracaoQR = DateTime.now().minus({ minutes: 2 }); 
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -18,12 +20,16 @@ const client = new Client({
     }
 });
 
-
-
-
-
-
 client.on('qr', (qr) => {
+    const agora = DateTime.now();
+
+    if (agora.diff(ultimaGeracaoQR, 'seconds').seconds < 60) {
+        console.log('⌛ Aguardando 1 minuto antes de gerar novo QR...');
+        return;
+    }
+
+    ultimaGeracaoQR = agora;
+    console.log('📱 Novo QR gerado. Escaneie com o WhatsApp:');
     qrcode.generate(qr, { small: true });
 });
 
@@ -37,15 +43,13 @@ client.on('message', async (message) => {
 });
 
 client.initialize();
-const cron = require('node-cron');
-const { gerarRelatorioDoDia, enviarRelatorioPorEmail } = require('./src/relatorio');
 
-// Agendar envio automático todos os dias às 23h59
-cron.schedule('59 23 * * *', async () => {
+
+cron.schedule('55 23 * * *', async () => {
     const hora = DateTime.now().setZone('America/Bahia').toFormat('HH:mm:ss');
     console.log(`⏰ [${hora}] Gerando e enviando relatório automático...`);
     try {
-        const path = await gerarCaminhoRelatorioHoje();
+        const path = await gerarCaminhoRelatorioHoje(); // ⚠️ Verifique se essa função está no seu arquivo de relatório
         await enviarRelatorioPorEmail(path);
         console.log('✅ Relatório enviado automaticamente!');
     } catch (error) {

@@ -44,12 +44,17 @@ function validarDataManual(input) {
     const [dia, mes, ano] = input.split("/").map(Number);
     const data = DateTime.fromObject({ day: dia, month: mes, year: ano }, { zone: "America/Bahia" });
 
+    const hoje = DateTime.now().setZone("America/Bahia").startOf("day");
+    const limiteMaximo = hoje.plus({ months: 1 });
+
     if (!data.isValid) return false;
-    if (data < DateTime.now().setZone("America/Bahia").startOf("day")) return false;
+    if (data < hoje) return false;
+    if (data > limiteMaximo) return false;
     if (data.weekday === 7) return false;
 
     return true;
 }
+
 
 function capitalizarNome(nome) {
     return nome
@@ -68,7 +73,18 @@ async function handleMessage(message, client) {
     const agora = DateTime.now().setZone("America/Bahia");
     let cliente = dadosClientes[numero] || {};
     
-    
+    if (foraDoHorario()) {
+        await sock.sendMessage(from, {
+            text: `⏰ Opa! Nosso horário de atendimento é:
+
+🕘 Segunda a sexta: 8h às 18h  
+🕘 Sábado: 8h às 14h  
+🚫 Domingo não atendemos.
+
+Pode nos enviar uma mensagem aqui mesmo que responderemos assim que possível.`
+        });
+        return; // impede que continue o fluxo fora do horário
+    }
 
 
     if (cliente.etapa === 'pausado') {
@@ -187,10 +203,12 @@ async function handleMessage(message, client) {
 
     if (cliente.etapa === 'digitando_data_manual' && !cliente.dataAgendada) {
         const dataManual = message.body.trim();
-        if (!validarDataManual(dataManual)) {
-            await client.sendMessage(numero, '⚠️ Data inválida. Certifique-se de usar o formato *dd/mm/aaaa*, e que a data não seja no passado ou domingo.');
-            return;
+        if (!validarDataManual(msg.body)) {
+            return sock.sendMessage(from, {
+                text: "❌ Data inválida! Por favor, informe uma data no formato **DD/MM/AAAA**, dentro dos próximos **30 dias** (exceto domingos)."
+            });
         }
+
 
         atualizarDados(numero, { dataAgendada: dataManual, etapa: 'concluido' });
         cliente = dadosClientes[numero];
@@ -315,10 +333,12 @@ async function handleMessage(message, client) {
 
     if (cliente.etapa === 'digitando_data_manual' && !cliente.dataAgendada) {
         const dataManual = message.body.trim();
-        if (!validarDataManual(dataManual)) {
-            await client.sendMessage(numero, '⚠️ Data inválida. Certifique-se de usar o formato *dd/mm/aaaa*, e que a data não seja no passado ou domingo.');
-            return;
+        if (!validarDataManual(msg.body)) {
+            return sock.sendMessage(from, {
+                text: "❌ Data inválida! Por favor, informe uma data no formato **DD/MM/AAAA**, dentro dos próximos **30 dias** (exceto domingos)."
+            });
         }
+
 
         atualizarDados(numero, { dataAgendada: dataManual, etapa: 'concluido' });
         cliente = dadosClientes[numero];

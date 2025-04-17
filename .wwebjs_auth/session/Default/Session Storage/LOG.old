@@ -1,3 +1,4 @@
-2025/04/15-17:54:07.785 13e0 Reusing MANIFEST C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Session Storage/MANIFEST-000001
-2025/04/15-17:54:07.785 13e0 Recovering log #3
-2025/04/15-17:54:07.786 13e0 Reusing old log C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Session Storage/000003.log 
+2025/04/17-12:05:51.853 51ac Creating DB C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Session Storage since it was missing.
+2025/04/17-12:05:51.875 51ac Reusing MANIFEST C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Session Storage/MANIFEST-000001
+2025/04/17-12:05:51.885 51ac Recovering log #3
+2025/04/17-12:05:51.886 51ac Reusing old log C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Session Storage/000003.log 

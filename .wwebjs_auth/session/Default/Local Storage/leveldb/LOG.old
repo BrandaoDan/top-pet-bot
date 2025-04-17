@@ -1,3 +1,6 @@
-2025/04/15-17:54:06.848 2268 Reusing MANIFEST C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2025/04/15-17:54:06.849 2268 Recovering log #16
-2025/04/15-17:54:06.850 2268 Reusing old log C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/000016.log 
+2025/04/17-12:05:47.711 51ac Creating DB C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Local Storage\leveldb since it was missing.
+2025/04/17-12:05:47.749 51ac Reusing MANIFEST C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2025/04/17-12:05:47.769 51ac Recovering log #16
+2025/04/17-12:05:47.770 51ac Reusing old log C:\DEV\bot\top-pet-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/000016.log 
+2025/04/17-12:05:47.770 51ac Delete type=2 #14
+2025/04/17-12:05:47.770 51ac Delete type=2 #17

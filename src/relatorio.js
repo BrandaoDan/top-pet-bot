@@ -5,7 +5,7 @@ const path = require('path');
 const { DateTime } = require("luxon");
 
 
-// Função para montar o caminho do relatório com a data de hoje
+
 function gerarCaminhoRelatorioHoje() {
   const hoje = DateTime.now().setZone("America/Bahia");
   const yyyy = hoje.getFullYear();

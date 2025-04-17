@@ -1,41 +1,25 @@
-# ==========================
-# Ignorar dependências
-# ==========================
+
 node_modules/
 .wwebjs_auth/
 
 
 
-# ==========================
-# Logs e arquivos temporários
-# ==========================
 logs/
 *.log
 npm-debug.log*
 
-# ==========================
-# Relatórios gerados automaticamente
-# ==========================
+
 relatorios/
 
-# ==========================
-# Variáveis de ambiente (nunca subir)
-# ==========================
+
 .env
 
-# ==========================
-# Arquivos de sistema operacional
-# ==========================
+
 .DS_Store
 Thumbs.db
 
-# ==========================
-# Pasta de build (caso adicione no futuro)
-# ==========================
 dist/
 
-# ==========================
-# Dados de sessão do WhatsApp
-# ==========================
+
 .session/
 .session-cache/

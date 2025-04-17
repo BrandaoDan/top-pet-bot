@@ -67,7 +67,7 @@ async function handleMessage(message, client) {
     const numero = message.from;
     const agora = DateTime.now().setZone("America/Bahia");
     let cliente = dadosClientes[numero] || {};
-    // Comando oculto: Reinicia atendimento ao digitar "menu"
+    
     
 
 
@@ -90,9 +90,9 @@ async function handleMessage(message, client) {
         if (minutosInativo > 5) {
             delete dadosClientes[numero];
             await delayAleatorio();
-            await client.sendMessage(numero, '⏳ Você ficou inativo por mais de 5 minutos. O atendimento será reiniciado. Por favor, escolha uma opção do menu.');
-            await delayAleatorio();
-            await client.sendMessage(numero, respostas.menu);
+            await client.sendMessage(numero, '⏳ Você ficou inativo por mais de 5 minutos. O atendimento será reiniciado.Digite *Oi* para continuar.');
+           // await delayAleatorio();
+           // await client.sendMessage(numero, respostas.menu);
             return;
         }
     }
@@ -211,7 +211,7 @@ async function handleMessage(message, client) {
 
         salvarAtendimento(numero);
         cliente.aguardandoAtendente = true;
-        atualizarDados(numero, { etapa: 'pausado', inicioPausa: agora.toISO() }); // encaminha para atendente
+        atualizarDados(numero, { etapa: 'pausado', inicioPausa: agora.toISO() }); 
         return;
     }
 
@@ -371,7 +371,29 @@ async function handleMessage(message, client) {
         return;
     }
 }
+function salvarAtendimento(numero) {
+    const cliente = dadosClientes[numero];
+    const agora = DateTime.now().setZone("America/Bahia");
 
+    const nomeArquivo = path.join(__dirname, `../relatorios/${agora.toISODate()}.csv`);
+    const cabecalho = 'Número,Cliente,Pet,Serviço,Tipo,Raça,Data,Hora do Contato,Inatividade (min)\n';
+
+    let inatividade = 0;
+    if (cliente.ultimaMensagem) {
+        const ultimaMsg = DateTime.fromISO(cliente.ultimaMensagem);
+        inatividade = Math.round(agora.diff(ultimaMsg, 'minutes').minutes);
+    }
+
+    const horaContato = agora.toFormat('HH:mm');
+    const linha = `${numero},${cliente.nome},${cliente.nomePet},${cliente.produtoDesejado},${cliente.tipoPet},${cliente.racaPet},${cliente.dataAgendada},${horaContato},${inatividade}\n`;
+
+    if (!fs.existsSync(nomeArquivo)) {
+        fs.writeFileSync(nomeArquivo, cabecalho);
+    }
+
+    fs.appendFileSync(nomeArquivo, linha);
+}
+/*
 function salvarAtendimento(numero) {
     const cliente = dadosClientes[numero];
     const agora = DateTime.now().setZone("America/Bahia");
@@ -392,5 +414,5 @@ function salvarAtendimento(numero) {
 
     fs.appendFileSync(nomeArquivo, linha);
 }
-
+*/
 module.exports = { handleMessage };

@@ -7,7 +7,7 @@ Digite a opção desejada:
 4️⃣ - Falar com um atendente`,
 
     askNamePet: '🐶Qual o nome do seu Pet ?🐕',
-    instagram: 'Enquanto isso que tal dar uma conferida no nosso instagram ?\n Aproveita e segue a gente lá @toppetsalvador\ninstagram.com/toppetsalvador/',
+    instagram: 'Enquanto isso que tal dar uma conferida no nosso instagram ?\n Aproveita e segue a gente lá *@toppetsalvador*\n\ninstagram.com/toppetsalvador/',
     askRacePet: '🐕Qual a raça ?🐶',
     askDate: '📅Para qual data deseja agendar o atendimento? (ex: 10/04/2025)',
     askProduct: 'Qual tipo de produto deseja ?💭',

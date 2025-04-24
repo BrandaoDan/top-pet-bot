@@ -83,7 +83,7 @@ async function handleMessage(message, client) {
 
 Pode nos enviar uma mensagem aqui mesmo que responderemos assim que possível.`
         });
-        return; // impede que continue o fluxo fora do horário
+        return; 
     }
 
 

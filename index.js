@@ -52,7 +52,7 @@ cron.schedule('55 23 * * *', async () => {
     const hora = DateTime.now().setZone('America/Bahia').toFormat('HH:mm:ss');
     console.log(`⏰ [${hora}] Gerando e enviando relatório automático...`);
     try {
-        const path = await gerarCaminhoRelatorioHoje(); // ⚠️ Verifique se essa função está no seu arquivo de relatório
+        const path = await gerarCaminhoRelatorioHoje(); 
         await enviarRelatorioPorEmail(path);
         console.log('✅ Relatório enviado automaticamente!');
     } catch (error) {
